@@ -1,10 +1,11 @@
-FROM python:3.8-rc-buster
-
+FROM nvidia/cuda:latest
 
 WORKDIR /app
 
+# Installing Python3 and Pip3
 RUN apt-get update
-RUN pip3 install --upgrade pip
+RUN apt-get update && apt-get install -y  python3-pip virtualenv libssl-dev libpq-dev git build-essential libfontconfig1 libfontconfig1-dev
+RUN pip3 install setuptools pip --upgrade --force-reinstall
 
 # Installing dependencies
 RUN pip install nibabel
