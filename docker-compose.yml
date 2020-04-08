@@ -1,7 +1,10 @@
-version: '3'
+version: '3.5'
 services:
   ct_muscle_seg:
-    build: ./
+    build:
+      context: .
+      shm_size: '2gb'
+    shm_size: '2gb'
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
     volumes:
