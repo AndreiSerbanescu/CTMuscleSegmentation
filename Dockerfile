@@ -23,3 +23,4 @@ RUN apt-get install vim -y
 
 COPY ./src/ /app/src
 RUN mv /app/src/* /app/ && rm -rf /app/src
+COPY listen.py /app/listen.py
