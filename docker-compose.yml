@@ -1,10 +1,10 @@
 version: '3'
 services:
   ct_muscle_seg:
-    build: ./src
+    build: ./
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
     volumes:
-      - 'source:/home/source'
-      - 'output:/home/output'
+      - ./source:/home/source
+      - ./output:/home/output
     command: tail -F anything
