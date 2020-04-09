@@ -64,7 +64,7 @@ def mark_yourself_ready():
 
 # PRE: file is .nii.gz
 def segment_muscle(param_dict):
-    print("### converter got parameters {}".format(param_dict))
+    print("### muscle segmenter got parameters {}".format(param_dict))
 
     source_file = param_dict["source_file"][0]
     model_name = "MuscleNC"
