@@ -21,10 +21,13 @@ RUN pip3 install scipy
 # Installing tools for debugging
 RUN apt-get install vim -y
 
+RUN pip3 install pytest
+RUN pip3 install mock
+
 COPY ./src/ /app/src
 RUN mv /app/src/* /app/ && rm -rf /app/src
 COPY listen.py /app/listen.py
 RUN mkdir /app/common
 COPY common/* /app/common/
 
-COPY test.py /app/test.py
+COPY test /app/test

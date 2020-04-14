@@ -15,7 +15,10 @@ def segment_muscle(param_dict):
 
     segment_command = "python3 /app/Inference.py --single_file {} --result_root {} --model {}"\
                          .format(source_file, "/tmp", model_name)
-    sb.call([segment_command], shell=True)
+    exit_call_segment = sb.call([segment_command], shell=True)
+
+    if exit_call_segment == 1:
+        return {}, False
 
     # remove from the end of source file ".nii.gz"
     volume_name = os.path.split(source_file)[1]
@@ -26,10 +29,13 @@ def segment_muscle(param_dict):
     output_name  = "ct-muscle-segment-" + str(time.time()) + ".nii.gz"
 
     move_command = "mv {} {}/{}".format(tmp_out_file, data_share, output_name)
-    sb.call([move_command], shell=True)
+    exit_call_move = sb.call([move_command], shell=True)
+
+    if exit_call_move == 1:
+        return {}, False
 
     result_dict = {"segmentation": output_name}
-    return result_dict
+    return result_dict, True
 
 if __name__ == "__main__":
 
