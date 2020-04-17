@@ -10,7 +10,11 @@ from common import listener_server
 def segment_muscle(param_dict):
     print("### muscle segmenter got parameters {}".format(param_dict))
 
-    source_file = param_dict["source_file"][0]
+    rel_source_file = param_dict["source_file"][0]
+
+    data_share = os.environ["DATA_SHARE_PATH"]
+    source_file = os.path.join(data_share, rel_source_file)
+
     model_name = "MuscleNC"
 
     segment_command = "python3 /app/Inference.py --single_file {} --result_root {} --model {}"\
