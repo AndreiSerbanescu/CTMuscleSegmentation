@@ -34,6 +34,38 @@ class FileValidatorNiftiOnly:
         return os.path.join(element_input_dir, files[0])
 
 
+class NiftiAndDicomFileValidator:
+
+    def __init__(self, print_statements=False):
+        self.print_statements = print_statements
+
+    def files_valid(self, files):
+
+        if len(files) == 0:
+            if self.print_statements:
+                log_error("No files found")
+
+            return False
+
+        if not files[0].endswith(".nii.gz") and not files[0].endswith(".dcm"):
+            if self.print_statements:
+                log_error("Unknown file extension")
+
+            return False
+
+        return True
+
+    def get_fullpath(self, files, element_input_dir):
+        if files[0].endswith(".nii.gz"):
+            return os.path.join(element_input_dir, files[0])
+
+        if files[0].endswith(".dcm"):
+            return element_input_dir
+
+        assert False
+
+
+
 def compute_task(task_method, source_file):
     try:
         task_output, success = task_method(source_file)
