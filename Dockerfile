@@ -21,8 +21,8 @@ RUN pip3 install scipy
 # Installing tools for debugging
 RUN apt-get install vim -y
 
-COPY ./src/ /app/src
-RUN mv /app/src/* /app/ && rm -rf /app/src
-COPY listen.py /app/listen.py
-RUN mkdir /app/common
-COPY common/* /app/common/
+RUN mkdir /app/data_share
+ENV DATA_SHARE_PATH /app/data_share
+
+COPY files/interface /app/
+COPY files/source /app

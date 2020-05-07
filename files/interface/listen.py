@@ -19,10 +19,13 @@ def segment_muscle(param_dict):
     data_share = os.environ["DATA_SHARE_PATH"]
     source_file = os.path.join(data_share, rel_source_file)
 
+    return segment_muscle_absolute(source_file)
+
+def segment_muscle_absolute(source_file):
     model_name = "MuscleNC"
 
-    segment_command = "python3 /app/Inference.py --single_file {} --result_root {} --model {}"\
-                         .format(source_file, "/tmp", model_name)
+    segment_command = "python3 /app/Inference.py --single_file {} --result_root {} --model {}" \
+        .format(source_file, "/tmp", model_name)
     exit_call_segment = sb.call([segment_command], shell=True)
 
     if exit_call_segment == 1:
@@ -32,9 +35,9 @@ def segment_muscle(param_dict):
     volume_name = os.path.split(source_file)[1]
     source_file_name = volume_name[:len(volume_name) - 7]
 
-    tmp_out_file = os.path.join("/tmp", source_file_name  + "_MuscleNC.nii.gz")
-    data_share   = os.environ["DATA_SHARE_PATH"]
-    output_name  = "ct-muscle-segment-" + str(time.time()) + ".nii.gz"
+    tmp_out_file = os.path.join("/tmp", source_file_name + "_MuscleNC.nii.gz")
+    data_share = os.environ["DATA_SHARE_PATH"]
+    output_name = "ct-muscle-segment-" + str(time.time()) + ".nii.gz"
 
     move_command = "mv {} {}/{}".format(tmp_out_file, data_share, output_name)
     exit_call_move = sb.call([move_command], shell=True)
