@@ -3,6 +3,8 @@ import os
 import time
 from common.utils import *
 from common import listener_server
+from common import utils
+import shutil
 
 
 
@@ -21,11 +23,28 @@ def segment_muscle(param_dict):
 
     return segment_muscle_absolute(source_file)
 
+def __create_tmp_out_dir():
+
+    unique_id = utils.get_unique_id()
+    tmp_out_file = os.path.join("/tmp", f"output-{unique_id}")
+
+    if os.path.exists(tmp_out_file):
+        log_debug(f"Temporary output file existed, deleting {tmp_out_file}")
+        shutil.rmtree(tmp_out_file)
+
+    os.makedirs(tmp_out_file)
+
+    return tmp_out_file
+
+
+
 def segment_muscle_absolute(source_file):
     model_name = "MuscleNC"
 
+    tmp_out_dir = __create_tmp_out_dir()
+
     segment_command = "python3 /app/Inference.py --single_file {} --result_root {} --model {}" \
-        .format(source_file, "/tmp", model_name)
+        .format(source_file, tmp_out_dir, model_name)
     exit_call_segment = sb.call([segment_command], shell=True)
 
     if exit_call_segment == 1:
@@ -35,7 +54,7 @@ def segment_muscle_absolute(source_file):
     volume_name = os.path.split(source_file)[1]
     source_file_name = volume_name[:len(volume_name) - 7]
 
-    tmp_out_file = os.path.join("/tmp", source_file_name + "_MuscleNC.nii.gz")
+    tmp_out_file = os.path.join(tmp_out_dir, source_file_name + "_MuscleNC.nii.gz")
     data_share = os.environ["DATA_SHARE_PATH"]
     output_name = "ct-muscle-segment-" + str(time.time()) + ".nii.gz"
 
